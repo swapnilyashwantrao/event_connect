@@ -1,0 +1,6 @@
+{
+  "name": "EventConnect",
+  "description": "Social event invitation and RSVP management app with real-time RSVPs, organizer attendance dashboard, and user discovery.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

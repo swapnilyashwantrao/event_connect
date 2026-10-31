@@ -1,0 +1,131 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public directory profile for discoverability and invitation recipient picking",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The user UID" },
+        "fullName": { "type": "string", "description": "Display name of the user" },
+        "username": { "type": "string", "description": "Unique lowercase handle" },
+        "profileImageUrl": { "type": "string", "description": "Profile avatar URL" },
+        "bio": { "type": "string", "description": "Short bio or tagline" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp submitted as FieldValue.serverTimestamp()" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Timestamp submitted as FieldValue.serverTimestamp()" }
+      },
+      "required": ["userId", "fullName", "username", "createdAt", "updatedAt"]
+    },
+    "UserPrivateInfo": {
+      "title": "UserPrivateInfo",
+      "description": "Private sensitive contact information accessible only by the owner",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "description": "User email address" },
+        "phoneNumber": { "type": "string", "description": "Optional phone number" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Timestamp submitted as FieldValue.serverTimestamp()" }
+      },
+      "required": ["email", "updatedAt"]
+    },
+    "Event": {
+      "title": "Event",
+      "description": "Event metadata, schedule, location, and attendance counts",
+      "type": "object",
+      "properties": {
+        "eventId": { "type": "string", "description": "Unique event document ID" },
+        "organizerId": { "type": "string", "description": "UID of the event organizer" },
+        "organizerName": { "type": "string", "description": "Display name of the organizer" },
+        "organizerPhotoUrl": { "type": "string", "description": "Avatar URL of organizer" },
+        "title": { "type": "string", "description": "Title of the event" },
+        "description": { "type": "string", "description": "Detailed event description" },
+        "category": { "type": "string", "description": "Event category (Birthday, Party, Wedding, Anniversary, Get-together, Office Party, Festival, Custom)" },
+        "eventDate": { "type": "string", "description": "Date string YYYY-MM-DD" },
+        "startTime": { "type": "string", "description": "Start time HH:mm" },
+        "endTime": { "type": "string", "description": "Optional end time HH:mm" },
+        "location": { "type": "string", "description": "Physical venue or address" },
+        "locationLink": { "type": "string", "description": "Optional map or web link" },
+        "coverImageUrl": { "type": "string", "description": "Cover image URL or asset key" },
+        "imageUrls": { "type": "array", "description": "Additional event gallery images" },
+        "invitationMessage": { "type": "string", "description": "Personalized invite note" },
+        "responseDeadline": { "type": "string", "description": "Optional RSVP deadline YYYY-MM-DD" },
+        "guestLimit": { "type": "integer", "description": "Maximum guests or 0 for unlimited" },
+        "visibility": { "type": "string", "enum": ["public", "private", "unlisted"], "description": "Visibility setting" },
+        "eventStatus": { "type": "string", "enum": ["active", "cancelled", "completed"], "description": "Event status" },
+        "invitedCount": { "type": "integer", "description": "Total invitations count" },
+        "acceptedCount": { "type": "integer", "description": "Count of accepted RSVPs" },
+        "maybeCount": { "type": "integer", "description": "Count of maybe RSVPs" },
+        "declinedCount": { "type": "integer", "description": "Count of declined RSVPs" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp submitted as FieldValue.serverTimestamp()" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Timestamp submitted as FieldValue.serverTimestamp()" }
+      },
+      "required": ["eventId", "organizerId", "organizerName", "title", "description", "category", "eventDate", "startTime", "location", "invitationMessage", "visibility", "eventStatus", "createdAt", "updatedAt"]
+    },
+    "Invitation": {
+      "title": "Invitation",
+      "description": "Event invitation sent to a specific user with RSVP state and response note",
+      "type": "object",
+      "properties": {
+        "recipientId": { "type": "string", "description": "Target recipient UID" },
+        "recipientName": { "type": "string", "description": "Recipient display name" },
+        "recipientUsername": { "type": "string", "description": "Recipient username" },
+        "recipientPhotoUrl": { "type": "string", "description": "Optional recipient avatar" },
+        "senderId": { "type": "string", "description": "Organizer UID who sent the invite" },
+        "senderName": { "type": "string", "description": "Organizer display name" },
+        "eventId": { "type": "string", "description": "Parent event ID" },
+        "eventTitle": { "type": "string", "description": "Denormalized event title" },
+        "eventDate": { "type": "string", "description": "Denormalized event date" },
+        "eventLocation": { "type": "string", "description": "Denormalized event location" },
+        "eventCategory": { "type": "string", "description": "Denormalized event category" },
+        "coverImageUrl": { "type": "string", "description": "Denormalized cover image" },
+        "invitationMessage": { "type": "string", "description": "Organizer invitation note" },
+        "invitationStatus": { "type": "string", "enum": ["sent", "delivered", "seen"], "description": "Delivery status" },
+        "rsvpStatus": { "type": "string", "enum": ["PENDING", "ACCEPTED", "MAYBE", "DECLINED"], "description": "RSVP response status" },
+        "responseMessage": { "type": "string", "description": "Optional attendee response note" },
+        "sentAt": { "type": "string", "format": "date-time", "description": "Timestamp when invite was created" },
+        "respondedAt": { "type": "string", "format": "date-time", "description": "Timestamp when RSVP was submitted" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Timestamp submitted as FieldValue.serverTimestamp()" }
+      },
+      "required": ["recipientId", "recipientName", "senderId", "senderName", "eventId", "eventTitle", "eventDate", "eventLocation", "invitationStatus", "rsvpStatus", "sentAt", "updatedAt"]
+    },
+    "UserNotification": {
+      "title": "UserNotification",
+      "description": "In-app notification for invitations, RSVP changes, reminders, updates, cancellations",
+      "type": "object",
+      "properties": {
+        "notificationId": { "type": "string", "description": "Unique notification ID" },
+        "recipientId": { "type": "string", "description": "Target recipient UID" },
+        "senderId": { "type": "string", "description": "Action actor UID" },
+        "senderName": { "type": "string", "description": "Sender display name" },
+        "eventId": { "type": "string", "description": "Related event ID" },
+        "eventTitle": { "type": "string", "description": "Related event title" },
+        "title": { "type": "string", "description": "Notification title" },
+        "message": { "type": "string", "description": "Notification body" },
+        "notificationType": { "type": "string", "enum": ["invitation", "rsvp_response", "event_update", "event_cancelled", "reminder"], "description": "Type of event notification" },
+        "isRead": { "type": "boolean", "description": "Read flag" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp submitted as FieldValue.serverTimestamp()" }
+      },
+      "required": ["notificationId", "recipientId", "senderId", "title", "message", "notificationType", "isRead", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Public directory of user profiles for discovery and attendee cards"
+    },
+    "/users/{userId}/private/info": {
+      "schema": { "$ref": "#/entities/UserPrivateInfo" },
+      "description": "Private sensitive contact information accessible only by the owner"
+    },
+    "/events/{eventId}": {
+      "schema": { "$ref": "#/entities/Event" },
+      "description": "Master events collection created and managed by organizers"
+    },
+    "/events/{eventId}/invitations/{recipientId}": {
+      "schema": { "$ref": "#/entities/Invitation" },
+      "description": "Individual invitation records with RSVP status and response messages"
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/UserNotification" },
+      "description": "User in-app notifications inbox"
+    }
+  }
+}
